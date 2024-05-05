@@ -178,7 +178,6 @@ function JobListing() {
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-
               {Array.from(new Set(jobs.map((job) => job.location))).map(
                 (location, index) => (
                   <MenuItem key={index} value={location}>
@@ -189,30 +188,7 @@ function JobListing() {
             </Select>
           </FormControl>
         </div>
-        {/* Remote filter */}
-        {/* <div>
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel id="demo-simple-select-autowidth-label">
-              Remote
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-autowidth-label"
-              id="demo-simple-select-autowidth"
-              value={remoteFilter}
-              autoWidth
-              onChange={(e) => handleRemoteChange(e.target.value)}
-              label="Min Experience"
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value="0-1">Remote/on-site</MenuItem>
-              <MenuItem value="Remote">Remote</MenuItem>
-              <MenuItem value="On-Site">On-site</MenuItem>
-            </Select>
-          </FormControl>
-        </div> */}
-        {/* role filter */}
+
         <div>
           <FormControl sx={{ m: 1, minWidth: 160 }}>
             <InputLabel id="demo-simple-select-autowidth-label">
