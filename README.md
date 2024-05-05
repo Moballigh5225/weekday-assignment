@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Node Version - 18.17.0
+
+## Steps: use 18.17.0 node then just install the Node using the "npm i " command - then Run command "npm run dev"
 
 ## Getting Started
 
