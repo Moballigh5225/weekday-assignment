@@ -178,7 +178,7 @@ function JobListing() {
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              <MenuItem value="">Location</MenuItem>
+
               {Array.from(new Set(jobs.map((job) => job.location))).map(
                 (location, index) => (
                   <MenuItem key={index} value={location}>
@@ -229,7 +229,7 @@ function JobListing() {
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              <MenuItem value="">Role</MenuItem>
+
               {Array.from(new Set(jobs.map((job) => job.jobRole))).map(
                 (role, index) => (
                   <MenuItem key={index} value={role}>
