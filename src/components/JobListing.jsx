@@ -19,40 +19,42 @@ function JobListing() {
   const [remoteFilter, setRemoteFilter] = useState(""); // For Remote/on-site
   const [roleFilter, setRoleFilter] = useState(""); // For Role
   const [minBasePayFilter, setMinBasePayFilter] = useState(""); // For Min base pay
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "https://api.weekday.technology/adhoc/getSampleJdJSON",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              limit: limit,
-              offset: offset,
-            }),
-          }
-        );
-        const data = await response.json();
-
-        // Add minJdSalary to each job object
-        const updatedJobs = data.jdList.map((job) => ({
-          ...job,
-          minJdSalary: job.minJdSalary,
-        }));
-
-        setJobs(updatedJobs);
-        setTotalCount(data?.totalCount || 0);
-      } catch (error) {
-        setError(error.message);
-      }
-    };
-
     fetchData();
-  }, []);
+  }, [page]);
+  const fetchData = async () => {
+    try {
+      const response = await fetch(
+        "https://api.weekday.technology/adhoc/getSampleJdJSON",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            limit: limit,
+            offset: (page - 1) * limit,
+            searchQuery: searchQuery,
+            minExpFilter: minExpFilter,
+            locationFilter: locationFilter,
+            remoteFilter: remoteFilter,
+            roleFilter: roleFilter,
+            minBasePayFilter: minBasePayFilter,
+          }),
+        }
+      );
+      const data = await response.json();
+      const updatedJobs = [...jobs, ...data.jdList];
+      setJobs(updatedJobs);
+      setTotalCount(data?.totalCount || 0);
+      setHasMore(updatedJobs.length < data.totalCount);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
   const filteredJobs = jobs
     .filter((job) =>
@@ -118,12 +120,26 @@ function JobListing() {
     new Set(jobs.map((job) => job.minJdSalary))
   );
 
+  const handleScroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop ===
+        document.documentElement.offsetHeight &&
+      hasMore
+    ) {
+      setPage(page + 1);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [hasMore]);
   return (
     <div className="JobListing p-10">
-      <div className="flex pb-20 justify-between">
+      <div className="flex pb-20 justify-between filters-container ">
         {/* experience filter */}
         <div>
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <FormControl sx={{ m: 1, minWidth: 150 }}>
             <InputLabel id="demo-simple-select-autowidth-label">
               Min Exp
             </InputLabel>
@@ -147,7 +163,7 @@ function JobListing() {
         </div>
         {/* Location */}
         <div>
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <FormControl sx={{ m: 1, minWidth: 150 }}>
             <InputLabel id="demo-simple-select-autowidth-label">
               Location
             </InputLabel>
@@ -198,7 +214,7 @@ function JobListing() {
         </div> */}
         {/* role filter */}
         <div>
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <FormControl sx={{ m: 1, minWidth: 160 }}>
             <InputLabel id="demo-simple-select-autowidth-label">
               Role
             </InputLabel>
@@ -226,7 +242,7 @@ function JobListing() {
         </div>
         {/* Min Base Pay filter */}
         <div>
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <FormControl sx={{ m: 1, minWidth: 160 }}>
             <InputLabel id="demo-simple-select-autowidth-label">
               Min Base Pay
             </InputLabel>
@@ -251,12 +267,12 @@ function JobListing() {
         </div>
         {/* Search Filter */}
         <div>
-          <Box className="mt-2">
+          <Box className="mt-2 text-black ">
             <TextField
               type="text"
               value={searchQuery}
               onChange={handleSearchInputChange}
-              placeholder="Search Company Name"
+              placeholder="Search By Company"
             />
           </Box>
         </div>

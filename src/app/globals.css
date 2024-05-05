@@ -63,3 +63,16 @@
   right: 10px;
   cursor: pointer;
 }
+/* JobCard.css (or JobCard.module.css) */
+.job-card {
+  font-family: "Roboto", sans-serif;
+}
+/* JobCard.css */
+
+.job-card {
+  transition: transform 0.3s ease-in-out;
+}
+
+.job-card:hover {
+  transform: scale(1.05);
+}

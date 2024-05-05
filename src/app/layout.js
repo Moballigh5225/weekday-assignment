@@ -1,5 +1,9 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+/>;
 
 const inter = Inter({ subsets: ["latin"] });
 
